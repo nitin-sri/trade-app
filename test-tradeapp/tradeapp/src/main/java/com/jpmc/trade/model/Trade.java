@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import com.jpmc.trade.enums.BuySellIndicator;
 import com.jpmc.trade.enums.Currency;
 
-public class Trade {
+public final class Trade {
 	private final String entity;
 	private final BuySellIndicator indicator;
 	private final BigDecimal agreedFx;

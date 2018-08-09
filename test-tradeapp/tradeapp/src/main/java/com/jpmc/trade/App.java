@@ -3,6 +3,7 @@ package com.jpmc.trade;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import com.jpmc.trade.dao.TradeDao;
 import com.jpmc.trade.dao.TradeDaoImpl;
@@ -37,15 +38,35 @@ public class App {
 				LocalDate.of(2016, 01, 07), 650, new BigDecimal("150.5"));
 		tradeService.createTrade(trade);
 
-		List<Trade> tradesSorted = tradeService.fetchEntitiesBasedOnRanking(BuySellIndicator.S);
-		BigDecimal amount = tradeService.fetchAmountInUSDSettled(BuySellIndicator.S);
-		System.out.println(amount);
+		trade = new Trade("foo4", BuySellIndicator.B, new BigDecimal(".50"), Currency.SGP, LocalDate.of(2016, 01, 01),
+				LocalDate.now(), 400, new BigDecimal("100.25"));
+		tradeService.createTrade(trade);
 
-		for (Trade trade1 : tradesSorted) {
-			System.out.println(trade1);
-			System.out.println(trade1.getEntity() + " amount " + trade1.getUSDAmountOfTrade());
-		}
+		trade = new Trade("bar4", BuySellIndicator.S, new BigDecimal(".22"), Currency.AED, LocalDate.of(2016, 01, 05),
+				LocalDate.now(), 650, new BigDecimal("150.5"));
+		tradeService.createTrade(trade);
 
+		trade = new Trade("foo5", BuySellIndicator.B, new BigDecimal(".50"), Currency.SGP, LocalDate.of(2016, 01, 01),
+				LocalDate.now(), 400, new BigDecimal("100.25"));
+		tradeService.createTrade(trade);
+
+		trade = new Trade("bar5", BuySellIndicator.S, new BigDecimal(".22"), Currency.AED, LocalDate.of(2016, 01, 05),
+				LocalDate.now(), 650, new BigDecimal("150.5"));
+		tradeService.createTrade(trade);
+
+		Map<String, BigDecimal> settledAmountMap = tradeService.getSettledAmountReportByDate(LocalDate.now());
+
+		System.out.println(settledAmountMap);
+
+		List<Trade> incomingTradesByRank = tradeService.fetchEntitiesBasedOnRanking(BuySellIndicator.S);
+		List<Trade> outgoingTradesByRank = tradeService.fetchEntitiesBasedOnRanking(BuySellIndicator.B);
+		
+		System.out.println("Incoming Trades, Rank wise");
+		incomingTradesByRank.forEach(t -> System.out.println(t.getEntity()));
+		
+		System.out.println("Outgoing Trades, Rank wise");
+		outgoingTradesByRank.forEach(t -> System.out.println(t.getEntity()));
+		
 	}
 
 }

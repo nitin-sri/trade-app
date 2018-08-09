@@ -1,7 +1,10 @@
 package com.jpmc.trade.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.jpmc.trade.dao.TradeDao;
 import com.jpmc.trade.enums.BuySellIndicator;
@@ -20,6 +23,10 @@ public class TradeServiceImpl implements TradeService {
 		return tradeDao.fetchAmountInUSDSettled(buySellIndicator);
 	}
 
+	public BigDecimal fetchAmountInUSDSettled(LocalDate settlementDate, BuySellIndicator buySellIndicator) {
+		return tradeDao.fetchAmountInUSDSettled(settlementDate, buySellIndicator);
+	}
+
 	public List<Trade> fetchEntitiesBasedOnRanking(BuySellIndicator buySellIndicator) {
 		return tradeDao.fetchEntitiesBasedOnRanking(buySellIndicator);
 	}
@@ -27,6 +34,16 @@ public class TradeServiceImpl implements TradeService {
 	public void createTrade(Trade trade) {
 		tradeDao.createTrade(trade);
 
+	}
+	
+	public Map<String, BigDecimal> getSettledAmountReportByDate(LocalDate settlementDate){
+		Map<String, BigDecimal> settledAmountMap = new HashMap<>();
+		BigDecimal incomingAmount = this.fetchAmountInUSDSettled(settlementDate,BuySellIndicator.S);
+		BigDecimal outgoingAmount = this.fetchAmountInUSDSettled(settlementDate, BuySellIndicator.B);
+		settledAmountMap.put("IncomingAmount", incomingAmount);
+		settledAmountMap.put("OutgoingAmount", outgoingAmount);
+		return settledAmountMap;
+		
 	}
 
 }
