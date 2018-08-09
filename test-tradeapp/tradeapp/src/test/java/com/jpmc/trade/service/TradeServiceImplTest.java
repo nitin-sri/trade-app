@@ -27,21 +27,23 @@ public class TradeServiceImplTest {
 		tradeDao = new TradeDaoImpl();
 		tradeService = new TradeServiceImpl(tradeDao);
 		
-		Trade tradefoo = new Trade("foo",BuySellIndicator.B, new BigDecimal(".50"), Currency.SGP, LocalDate.of(2016, 01, 01), LocalDate.of(2016, 01, 02), 200, new BigDecimal("100.25"));
-		Trade tradebar = new Trade("bar",BuySellIndicator.S, new BigDecimal(".22"), Currency.AED, LocalDate.of(2016, 01, 05), LocalDate.of(2016, 01, 07), 450, new BigDecimal("150.5"));
+		Trade trade = new Trade("foo",BuySellIndicator.B, new BigDecimal(".50"), Currency.SGP, LocalDate.of(2016, 01, 01), LocalDate.of(2016, 01, 02), 200, new BigDecimal("100.25"));
+		tradeService.createTrade(trade);
 		
-		Trade tradefoo2 = new Trade("foo2",BuySellIndicator.B, new BigDecimal(".50"), Currency.SGP, LocalDate.of(2016, 01, 01), LocalDate.of(2016, 01, 02), 300, new BigDecimal("100.25"));
-		Trade tradebar2 = new Trade("bar2",BuySellIndicator.S, new BigDecimal(".22"), Currency.AED, LocalDate.of(2016, 01, 05), LocalDate.of(2016, 01, 07), 550, new BigDecimal("150.5"));
+		trade = new Trade("bar",BuySellIndicator.S, new BigDecimal(".22"), Currency.AED, LocalDate.of(2016, 01, 05), LocalDate.of(2016, 01, 07), 450, new BigDecimal("150.5"));
+		tradeService.createTrade(trade);
 		
-		Trade tradefoo3 = new Trade("foo3",BuySellIndicator.B, new BigDecimal(".50"), Currency.SGP, LocalDate.of(2016, 01, 01), LocalDate.of(2016, 01, 02), 400, new BigDecimal("100.25"));
-		Trade tradebar3 = new Trade("bar3",BuySellIndicator.S, new BigDecimal(".22"), Currency.AED, LocalDate.of(2016, 01, 05), LocalDate.of(2016, 01, 07), 650, new BigDecimal("150.5"));
+		trade = new Trade("foo2",BuySellIndicator.B, new BigDecimal(".50"), Currency.SGP, LocalDate.of(2016, 01, 01), LocalDate.of(2016, 01, 02), 300, new BigDecimal("100.25"));
+		tradeService.createTrade(trade);
 		
-		tradeService.createTrade(tradefoo);
-		tradeService.createTrade(tradebar);
-		tradeService.createTrade(tradefoo2);
-		tradeService.createTrade(tradebar2);
-		tradeService.createTrade(tradefoo3);
-		tradeService.createTrade(tradebar3);
+		trade = new Trade("bar2",BuySellIndicator.S, new BigDecimal(".22"), Currency.AED, LocalDate.of(2016, 01, 05), LocalDate.of(2016, 01, 07), 550, new BigDecimal("150.5"));
+		tradeService.createTrade(trade);
+		
+		trade = new Trade("foo3",BuySellIndicator.B, new BigDecimal(".50"), Currency.SGP, LocalDate.of(2016, 01, 01), LocalDate.of(2016, 01, 02), 400, new BigDecimal("100.25"));
+		tradeService.createTrade(trade);
+		
+		trade = new Trade("bar3",BuySellIndicator.S, new BigDecimal(".22"), Currency.AED, LocalDate.of(2016, 01, 05), LocalDate.of(2016, 01, 07), 650, new BigDecimal("150.5"));
+		tradeService.createTrade(trade);
 	}
 
 	@Test
