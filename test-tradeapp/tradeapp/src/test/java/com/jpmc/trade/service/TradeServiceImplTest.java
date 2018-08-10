@@ -1,6 +1,8 @@
 package com.jpmc.trade.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.jpmc.trade.dao.TradeDao;
@@ -34,24 +35,30 @@ public class TradeServiceImplTest {
 
 	@Test
 	public void shoulFetchAmountInUSDSettledForBuy() {
-		Mockito.when(tradeDao.fetchAmountInUSDSettled(BuySellIndicator.B)).thenReturn(BigDecimal.TEN);
+		when(tradeDao.fetchAmountInUSDSettled(BuySellIndicator.B)).thenReturn(BigDecimal.TEN);
 		BigDecimal amount = tradeService.fetchAmountInUSDSettled(BuySellIndicator.B);
+
 		assertEquals(BigDecimal.TEN, amount);
+		verify(tradeDao).fetchAmountInUSDSettled(BuySellIndicator.B);
 	}
 
 	@Test
 	public void shoulFetchAmountInUSDSettledForSell() {
-		Mockito.when(tradeDao.fetchAmountInUSDSettled(BuySellIndicator.S)).thenReturn(BigDecimal.TEN);
+		when(tradeDao.fetchAmountInUSDSettled(BuySellIndicator.S)).thenReturn(BigDecimal.TEN);
 		BigDecimal amount = tradeService.fetchAmountInUSDSettled(BuySellIndicator.S);
+
 		assertEquals(BigDecimal.TEN, amount);
+		verify(tradeDao).fetchAmountInUSDSettled(BuySellIndicator.S);
 	}
 
 	@Test
 	public void shoulFetchAmountInUSDSettledFor_Sell_On_Thursday() {
-		Mockito.when(tradeDao.fetchAmountInUSDSettled(LocalDate.of(2016, 01, 07), BuySellIndicator.S))
+		when(tradeDao.fetchAmountInUSDSettled(LocalDate.of(2016, 01, 07), BuySellIndicator.S))
 				.thenReturn(BigDecimal.TEN);
 		BigDecimal amount = tradeService.fetchAmountInUSDSettled(LocalDate.of(2016, 01, 07), BuySellIndicator.S);
+
 		assertEquals(BigDecimal.TEN, amount);
+		verify(tradeDao).fetchAmountInUSDSettled(LocalDate.of(2016, 01, 07), BuySellIndicator.S);
 	}
 
 	@Test
@@ -64,20 +71,25 @@ public class TradeServiceImplTest {
 				LocalDate.of(2016, 01, 02), 200, new BigDecimal("100.25"));
 		dummyList.add(trade);
 
-		Mockito.when(tradeDao.fetchEntitiesBasedOnRanking(BuySellIndicator.B)).thenReturn(dummyList);
+		when(tradeDao.fetchEntitiesBasedOnRanking(BuySellIndicator.B)).thenReturn(dummyList);
 		List<Trade> outgoingTrades = tradeService.fetchEntitiesBasedOnRanking(BuySellIndicator.B);
+
 		assertEquals("foo2", outgoingTrades.get(0).getEntity());
+		verify(tradeDao).fetchEntitiesBasedOnRanking(BuySellIndicator.B);
 	}
 
 	@Test
 	public void getDailySettledAmountTest() {
-		Mockito.when(tradeDao.fetchAmountInUSDSettled(LocalDate.now(), BuySellIndicator.S))
+		when(tradeDao.fetchAmountInUSDSettled(LocalDate.now(), BuySellIndicator.S))
 				.thenReturn(new BigDecimal("43043.000"));
-		Mockito.when(tradeDao.fetchAmountInUSDSettled(LocalDate.now(), BuySellIndicator.B))
+		when(tradeDao.fetchAmountInUSDSettled(LocalDate.now(), BuySellIndicator.B))
 				.thenReturn(new BigDecimal("40100.0000"));
 		Map<String, BigDecimal> settledAmountMap = tradeService.getSettledAmountReportByDate(LocalDate.now());
+
 		assertEquals(new BigDecimal("40100.0000"), settledAmountMap.get("OutgoingAmount"));
 		assertEquals(new BigDecimal("43043.000"), settledAmountMap.get("IncomingAmount"));
+		verify(tradeDao).fetchAmountInUSDSettled(LocalDate.now(), BuySellIndicator.S);
+		verify(tradeDao).fetchAmountInUSDSettled(LocalDate.now(), BuySellIndicator.B);
 	}
 
 }
